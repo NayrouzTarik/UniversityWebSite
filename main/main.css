@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #182018;
+}
+
+#sidebar {
+    height: 100vh;
+    width: 80px;
+    background-color: #000000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar li {
+    margin-bottom: 10px;
+}
+
+#sidebar a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+#sidebar a img {
+    width: 60px; /* Adjust the size of your icons */
+    height: 40px;
+    margin-left: 5px;
+    margin-bottom: 50px;
+}
+
+#content {
+    margin-left: 120px; /* Adjust this value based on your sidebar width */
+    padding: 0px;
+}
+
+.searchbar {
+    /* Add your search bar styles here */
+    margin-bottom: 20px;
+    background-color: #000000;
+}
+
+.searchbar input {
+    width: 700px;
+    height: 40px;
+    padding: 10px;
+    margin-right: 70px;
+    background-color: #000000;
+    border: #000000;
+    color: white;
+}
+
+.searchbar button {
+    padding: 10px;
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+
+.infos {
+    background-color: #446040;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.categories {
+    margin-top: 20px;
+}
+
+.categories ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.categories li {
+    margin-right: 20px;
+}
+
+.categories li > ul {
+    margin-left: 20px;
+    display: none;
+}
+
+.categories a {
+    display: block;
+    text-decoration: none;
+    color: rgb(2, 2, 2);
+    padding: 10px;
+    background-color: beige;
+    border: 1px solid #0b0b0b;
+    border-radius: 5px;
+}
+
+.categories li:hover > ul {
+    display: block;
+}
+
+#login {
+    text-decoration: none;
+    color: #333;
+    padding: 8px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ddd;
+}
+
+#login:hover {
+    background-color: #bbb;
+}
