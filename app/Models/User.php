@@ -10,6 +10,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    const ROLE_ETUDIANT = 'Etudiant';
+    const ROLE_PROFESSEUR = 'Professeur';
+    const ROLE_RESPONSABLE_FILIERE = 'Responsable de Filiere';
+    const ROLE_CHEF_DEPARTEMENT = 'Chef de Departement';
+    const ROLE_RESPONSABLE_PEDAGOGIQUE = 'Responsable Service Pédagogique';
+
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
