@@ -56,20 +56,50 @@
 <body>
 
     <div class="header">
-        <h2>Welcome,!</h2>
-        <a href="{{ url('/login') }}">Logout</a>
+        <h2>Welcome, {{ Auth::user()->name }}!</h2>
+        <a href="{{ url('/') }}">Logout</a>
     </div>
 
     <div class="content">
         <h3>Options:</h3>
         <ul>
             <li><a href="{{ route('emploi') }}">Emploi du Temps</a></li>
-            <li><a href="{{ route('annonce') }}">Annonces Professeurs</a></li>
+            <li><a href="{{ route('annonce') }}">Annonces Professeurs et Delegue</a></li>
             <li><a href="{{ route('demandes') }}">Demandes Étudiants</a></li>
             <li><a href="{{ route('absence') }}">Justifications Absence</a></li>
-            <li><a href="{{ route('tp') }}">Changements TP</a></li>
+            <li><a href="{{ route('tp') }}">Travaux Pratique</a></li>
             <li><a href="{{ route('incident') }}">Signalement Incidents</a></li>
+            <li><a href="{{ route('message.aux.profs') }}">Message aux Profs</a></li>
         </ul>
     </div>
+    <script>
+        function submitMessageForm() {
+            var form = document.getElementById('messageForm');
+            var formData = new FormData(form);
+
+            fetch('/send-message', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                alert('Message sent successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error sending message');
+            });
+        }
+    </script>
 </body>
 </html>

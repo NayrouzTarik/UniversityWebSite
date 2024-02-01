@@ -80,18 +80,19 @@
 
     <div class="header">
         <h2>Signalement Incidents</h2>
-        <a href="/login/login.html">Logout</a>
+        <a href="{{ url('/') }}">Logout</a>
     </div>
 
     <div class="content">
-        <form action="/submit-incident" method="post" id="incidentForm" onsubmit="return validateForm()">
+        <form method="POST" action="{{ route('submit-incident') }}">
+            @csrf
             <label for="incidentType">Incident Type:</label>
             <select id="incidentType" name="incidentType" required>
-                <option value="chaise">Chaise (Chair)</option>
-                <option value="tableau">Tableau (Blackboard)</option>
-                <option value="priseInterne">Prise interne (Internal Socket)</option>
-                <option value="projecteur">Projecteur (Projector)</option>
-                <option value="ordinateur">Ordinateur (Computer)</option>
+                <option value="chaise">Chaise</option>
+                <option value="tableau">Tableau </option>
+                <option value="priseInterne">Prise interne </option>
+                <option value="projecteur">Projecteur </option>
+                <option value="ordinateur">Ordinateur </option>
             </select>
 
             <label for="description">Description:</label>
@@ -113,17 +114,12 @@
                 <option value="physique">Physique</option>
                 <option value="amphi">AMPHI</option>
             </select>
-
             <label for="class">Class/Amphi:</label>
             <select id="class" name="class" required>
-               
             </select>
-
-            <button type="submit">Submit Incident</button>
+            <button type="submit">Report Incident</button>
         </form>
     </div>
-
-
 
     <script>
         function updateOptions() {

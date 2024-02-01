@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Justifications Absence</title>
     <style>
         body {
@@ -87,11 +89,12 @@
 
     <div class="header">
         <h2>Justifications Absence</h2>
-        <a href="{{ url('/login') }}">Logout</a>
+        <a href="{{ url('/') }}">Logout</a>
     </div>
 
     <div class="content">
-        <form id="absenceForm">
+        <form id="absenceForm" method="POST" action="/save-absence">
+            @csrf
             <label for="dateInput">Date:</label>
             <input type="date" id="dateInput" required>
             <label for="justificationInput">Justification:</label>
@@ -117,57 +120,63 @@
             var date = document.getElementById('dateInput').value;
             var justification = document.getElementById('justificationInput').value;
 
-           
             if (!date || !justification) {
-                alert('Please enter both date and justification.');
+                alert('SVP entrer la date et la justification.');
                 return;
             }
 
-            const tableBody = document.querySelector('#absenceTable tbody');
-            const newRow = document.createElement('tr');
-            const dateCell = document.createElement('td');
-            const justificationCell = document.createElement('td');
-
-            dateCell.textContent = date;
-            justificationCell.textContent = justification;
-
-            newRow.appendChild(dateCell);
-            newRow.appendChild(justificationCell);
-
-            tableBody.appendChild(newRow);
-
-            document.getElementById('dateInput').value = '';
-            document.getElementById('justificationInput').value = '';
+            fetch('/save-absence', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ date: date, justification: justification })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                const tableBody = document.querySelector('#absenceTable tbody');
+                const newRow = document.createElement('tr');
+                const dateCell = document.createElement('td');
+                const justificationCell = document.createElement('td');
+                dateCell.textContent = date;
+                justificationCell.textContent = justification;
+                newRow.appendChild(dateCell);
+                newRow.appendChild(justificationCell);
+                tableBody.appendChild(newRow);
+                document.getElementById('dateInput').value = '';
+                document.getElementById('justificationInput').value = '';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
 
         function updateTable() {
-            // Fetch absence data from the server
             fetch('/get-absences')
                 .then(response => response.json())
                 .then(data => {
                     const tableBody = document.querySelector('#absenceTable tbody');
-                    tableBody.innerHTML = '';
-
                     data.forEach(rowData => {
                         const row = document.createElement('tr');
                         const dateCell = document.createElement('td');
                         const justificationCell = document.createElement('td');
-
                         dateCell.textContent = rowData.date;
                         justificationCell.textContent = rowData.justification;
-
                         row.appendChild(dateCell);
                         row.appendChild(justificationCell);
-
                         tableBody.appendChild(row);
                     });
                 })
                 .catch(error => console.error('Error fetching absence data:', error));
         }
-
-        updateTable(); // Fetch initial data when the page loads
+        updateTable();
     </script>
-    
-
 </body>
 </html>

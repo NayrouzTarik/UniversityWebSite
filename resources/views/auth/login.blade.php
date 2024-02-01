@@ -71,13 +71,5 @@
             </form>
         </div>
     </div>
-
-    <script>
-        // You can remove this JavaScript if not needed for custom redirection
-        // Keep in mind Laravel's built-in authentication may not work as expected without following its conventions.
-        function login() {
-            // Your custom JavaScript logic
-        }
-    </script>
 </body>
 </html>

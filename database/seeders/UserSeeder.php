@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'status' => 'active',
             ],
 
-            // delegue-Responsable de Filiere
+            // delegue-Respode Filiere
             [
                 'name' => 'omar taraki',
                 'username' => 'otaraki',
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
                 'status' => 'active',
             ],
 
-            // Responsable Service Pédagogique
+            // Responsable Service Pedago
             [
                 'name' => 'anouar loukili',
                 'username' => 'aloukili',

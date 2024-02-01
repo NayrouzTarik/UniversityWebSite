@@ -10,6 +10,7 @@
         margin: 0;
         font-family: Arial, sans-serif;
         background-color: #182018;
+        width: 100%;
         }
 
         #sidebar {
@@ -77,13 +78,18 @@
 
         .infos {
             background-color: #446040;
-            padding: 10px;
+            padding: 15px; 
             margin-top: -18px;
-            border-radius: 10px;
+            border-radius: 12px; 
+            color: #FFFFFF;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
         }
 
         .categories {
-            margin-top: 20px;
+            max-width: 1200px;
+            margin: 20px auto; 
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .categories ul {
@@ -91,30 +97,50 @@
             padding: 0;
             margin: 0;
             display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
         }
 
         .categories li {
-            margin-right: 20px;
+            margin: 10px; 
+            width: auto;
+            min-width: 150px;
+            transition: transform 0.3s;
         }
 
         .categories li > ul {
             margin-left: 20px;
             display: none;
+            position: absolute;
+            background-color: #F8F9FA;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
         }
 
         .categories a {
             display: block;
             text-decoration: none;
-            color: rgb(2, 2, 2);
-            padding: 10px;
-            background-color: beige;
-            border: 1px solid #0b0b0b;
-            border-radius: 5px;
+            color: #333333; 
+            padding: 12px;
+            background-color: #FFFFFF;
+            border: 2px solid #DDE2E5;
+            border-radius: 8px; 
+            transition: background-color 0.3s, color 0.3s; 
         }
 
         .categories li:hover > ul {
-            display: block;
+            display: block; 
         }
+
+        .categories li:hover {
+            transform: translateY(-5px);
+        }
+
+        .categories a:hover {
+            background-color: #E2E6EA; 
+            color: #0C62C2; 
+        }
+
 
         #login {
             text-decoration: none;
@@ -315,12 +341,11 @@
     <div id="sidebar">
         <ul>
             <li><a href="#home"><img src="https://process.studio/wp-content/uploads/2017/09/archdiploma_black.gif" alt="Home"></a></li>
-            <li><a href="#about">ABOUT US</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-            <li><a href="#localization">Localisation</a></li>
-            <li><a href="#settings"><Settings</a></li>
-            <li><a href="#help">Help</a></li>
+            <li><a href="{{ route('aboutus') }}">ABOUT US</a></li>
+            <li><a href="{{ route('services.show') }}">Services</a></li>
+            <li><a href="{{ route('contact.show') }}">Contact Us</a></li>
+            <li><a href="https://www.google.com/maps/d/viewer?mid=1IH8wub3hFvwNV3QTBmmPGMyNRJQ&hl=en&ll=47.65649415115211%2C-122.310319&z=15">Localisation</a></li>
+            <li><a href="{{ route('help.show') }}">Help</a></li>
         </ul>
     </div>    
     <div id="content">
@@ -347,6 +372,7 @@
                             <li><a href="{{ url('/login') }}">Justifications Absence</a></li>
                             <li><a href="{{ url('/login') }}">Changements TP</a></li>
                             <li><a href="{{ url('/login') }}">Signalement Incidents</a></li>
+                            <li><a href="{{ url('/login') }}">Envoyer Les Messages aux Profs</a></li>
                         </ul>
                     </li>
                     <li>
@@ -388,7 +414,7 @@
                   <img src="https://www.edinfo.ma/images/uploads/20151209105840_67441.jpg" class="news1">
                   <p>Dans une démarche innovante et en quête de nouveaux talents, un consortium d'entreprises de premier plan s'apprête à investir le campus universitaire pour rencontrer et recruter les étudiants les plus prometteurs. Cet événement...</p>
                   <div class="read-more">
-                    <a href="news1.html">Read More</a>
+                    <a href="{{ url('/news1') }}">Read More</a>
                   </div>
                 </div>
                 <div class="news" id="news2">
@@ -396,7 +422,7 @@
                   <img src="https://bourses-etudes.net/wp-content/uploads/2020/03/Etudier-a-letranger-1-1.png">
                   <p>La faculté est fière d'annoncer une gamme exceptionnelle d'opportunités de bourses d'études internationales dans des pays renommés, offrant à nos étudiants la possibilité de vivre une expérience académique et culturelle unique à travers le monde...</p>
                   <div class="read-more">
-                    <a href="news2.html">Read More</a>
+                    <a href="{{ url('/news2') }}">Read More</a>
                   </div>
                 </div>
                 <div class="news" id="news3">
@@ -404,11 +430,10 @@
                   <img src="https://pro.etudiant.lefigaro.fr/wp-content/uploads/2022/10/shutterstock_1494218468.jpg">
                   <p>Notre campus s'engage résolument dans une ère d'innovation avec le déploiement de nouvelles technologies et initiatives modernes qui transforment l'environnement académique. Ces développements témoignent de l'engagement de la faculté à rester à la pointe de la technologie pour offrir une expérience d'apprentissage enrichissante...</p>
                   <div class="read-more">
-                    <a href="news3.html">Read More</a>
+                    <a href="{{ url('/news3') }}">Read More</a>
                   </div>
                 </div>
-            
-                <!-- Navigation Buttons -->
+ 
                 <div id="navigation-buttons">
                   <button id="prev-btn" onclick="showNews(-1)">❮</button>
                   <button id="next-btn" onclick="showNews(1)">❯</button>

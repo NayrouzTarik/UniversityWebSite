@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Annonces Professeurs</title>
-    <link rel="stylesheet" href="etudiant-page.css">
     <style>
         body {
             background-color: #3b4a4e;
@@ -35,42 +34,45 @@
         .content {
             padding: 20px;
         }
+
+        .message-list {
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .message-item {
+            background-color: #f5f5dc;
+            border: 1px solid #dedcba; 
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .message-item p {
+            margin: 0;
+            color: #333333;
+        }
+
     </style>
 </head>
 <body>
-
     <div class="header">
-        <h2>Annonces Professeurs</h2>
-        <a href="/login/login.html">Logout</a>
+        <h2>Annonces</h2>
+        <a href="{{ url('/') }}">Logout</a>
     </div>
-    <div class="content" id="announcementsContent">
-        
+    <div class="content" id="messagesContent">
+        <h2>Messages</h2>
+        <div class="message-list">
+            @foreach ($messages as $message)
+                <div class="message-item">
+                    <p>Envoyer par : {{ $message->nom}}</p>
+                    <p>{{ $message->message }}</p>
+                </div>
+            @endforeach
+        </div>
     </div>
-    <script>
-        function fetchAnnouncements() 
-        {
-            fetch('/api/announcements')
-                .then(response => response.json())
-                .then(data => {
-                    const announcementsContent = document.getElementById('announcementsContent');
-                    announcementsContent.innerHTML = ''; 
-
-                    data.forEach(announcement => 
-                    {
-                        const announcementElement = document.createElement('div');
-                        announcementElement.innerHTML = `
-                            <h3>${announcement.title}</h3>
-                            <p>${announcement.content}</p>
-                            <p><strong>Posted by:</strong> ${announcement.author}</p>
-                            <hr>
-                        `;
-                        announcementsContent.appendChild(announcementElement);
-                    });
-                })
-                .catch(error => console.error('Error fetching announcements:', error));
-        }
-        fetchAnnouncements();
-    </script>
-
 </body>
 </html>

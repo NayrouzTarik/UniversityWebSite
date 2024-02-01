@@ -19,7 +19,7 @@ class LoginController extends Controller
                 case User::ROLE_ETUDIANT:
                     return redirect()->intended('/etudiant/dashboard');
                 case User::ROLE_PROFESSEUR:
-                    return redirect()->intended('/professeur/dashboard');
+                    return redirect()->intended('/prof/dashboard');
                 case User::ROLE_RESPONSABLE_FILIERE:
                     return redirect()->intended('/responsable-filiere/dashboard');
                 case User::ROLE_CHEF_DEPARTEMENT:
@@ -30,9 +30,6 @@ class LoginController extends Controller
                     return redirect()->intended('/');
             }
         }
-    
         return redirect()->back()->withErrors(['email' => 'Invalid login credentials']);
     }
-    
-    
 }

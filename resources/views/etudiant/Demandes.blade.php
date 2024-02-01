@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
             background-color: #446040;
@@ -102,10 +103,11 @@
 
     <div class="header">
         <h2>Demandes</h2>
-        <button><a href="/login/login.html"> LOGOUT </a></button>
+        <button><a href="{{ url('/') }}"> LOGOUT </a></button>
     </div>
     <div class="content">
-        <form id="documentForm" name="document" method="post" action="/submit" enctype="multipart/form-data">
+        <form id="documentForm" name="document" method="post" action="{{ url('/demandes') }}">
+            @csrf
             <div class="document-group">
                 <label class="document-title">Attestation de scolarité</label>
                 <div class="document-checkbox">
@@ -142,8 +144,6 @@
                     <label for="releve_SM04"><input type="checkbox" id="releve_SM04" name="documents[]" value="Relevé de note - TLGE SM04"> TLGE SM04</label>
                 </div>
             </div>
-            
-            
 
             <div class="document-group">
                 <label class="document-title" style="vertical-align: top;">Baccalauréat</label>
@@ -166,7 +166,6 @@
 
             <button type="button" onclick="addDocuments()">Finish</button>
         </form>
-
         <table id="documentTable">
             <thead>
                 <tr>
@@ -175,11 +174,19 @@
                 </tr>
             </thead>
             <tbody>
-            </tbody>
+                </tbody>
         </table>
-    </div>
-
+        </div>
+        
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadTableFromLocalStorage();
+            document.getElementById('documentForm').addEventListener('submit', function (event) {
+                event.preventDefault(); 
+                addDocuments(); 
+            });
+        });
+
         function addDocuments() {
             var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
             var tableBody = document.querySelector('#documentTable tbody');
@@ -188,10 +195,8 @@
                 var newRow = document.createElement('tr');
                 var documentCell = document.createElement('td');
                 var statusCell = document.createElement('td');
-
                 documentCell.textContent = checkbox.value;
-                statusCell.textContent = 'EN COURS';
-
+                statusCell.textContent = 'EN COURS'; 
                 newRow.appendChild(documentCell);
                 newRow.appendChild(statusCell);
                 tableBody.appendChild(newRow);
@@ -199,10 +204,46 @@
             checkboxes.forEach(function (checkbox) {
                 checkbox.checked = false;
             });
-
+            saveTableToLocalStorage();
             submitFormToLaravel();
         }
 
+
+        function saveTableToLocalStorage() 
+        {
+            var tableRows = document.querySelectorAll('#documentTable tbody tr');
+            var documents = Array.from(tableRows).map(function (row) {
+                return {
+                    name: row.cells[0].textContent,
+                    status: row.cells[1].textContent,
+                };
+            });
+            localStorage.setItem('tableData', JSON.stringify(documents));
+        }
+
+        function loadTableFromLocalStorage() 
+        {
+            var tableBody = document.querySelector('#documentTable tbody');
+            var storedData = localStorage.getItem('tableData');
+
+            if (storedData) 
+            {
+                var documents = JSON.parse(storedData);
+                documents.forEach(function (doc) 
+                {
+                    var newRow = document.createElement('tr');
+                    var documentCell = document.createElement('td');
+                    var statusCell = document.createElement('td');
+
+                    documentCell.textContent = doc.name;
+                    statusCell.textContent = doc.status;
+
+                    newRow.appendChild(documentCell);
+                    newRow.appendChild(statusCell);
+                    tableBody.appendChild(newRow);
+                });
+            }
+        }
         function submitFormToLaravel() {
             var tableRows = document.querySelectorAll('#documentTable tbody tr');
             var documents = Array.from(tableRows).map(function (row) {
@@ -211,7 +252,8 @@
                     status: row.cells[1].textContent,
                 };
             });
-            fetch('/submit', {
+
+            fetch('/save-documents', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -219,29 +261,17 @@
                 },
                 body: JSON.stringify({ documents: documents }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); 
+            })
             .then(data => {
-                updateTableWithStatus(data);
+                console.log(data.message);
             })
             .catch(error => {
                 console.error('Error:', error);
-            });
-        }
-
-        function updateTableWithStatus(data) {
-            var tableBody = document.querySelector('#documentTable tbody');
-            tableBody.innerHTML = ''; 
-            data.forEach(function (doc) {
-                var newRow = document.createElement('tr');
-                var documentCell = document.createElement('td');
-                var statusCell = document.createElement('td');
-
-                documentCell.textContent = doc.name;
-                statusCell.textContent = doc.status;
-
-                newRow.appendChild(documentCell);
-                newRow.appendChild(statusCell);
-                tableBody.appendChild(newRow);
             });
         }
     </script>
